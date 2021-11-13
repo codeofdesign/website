@@ -4,11 +4,10 @@
 
 	let content
 
-	// @TODO: use 'metadata?'
-
 	onMount(() => {
-		const translation = translations.find(t => t.id === 'en_US')
-		content = translation.content.html
+		const translation = translations.find(t => t.metadata.id === 'en_US')
+		content = translation.html
+		console.log(translations)
 	})
 </script>
 
