@@ -13,7 +13,7 @@
 </script>
 
 <main>
-	<h2>Code of Design:</h2>
+	<h2>Code of Design</h2>
 	{@html content}
 </main>
 
