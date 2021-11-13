@@ -13,7 +13,6 @@
 </script>
 
 <main>
-	<h2>Code of Design</h2>
 	{@html content}
 </main>
 
@@ -25,13 +24,8 @@
 		font-family: 'Inter', sans-serif;
 	}
 
-	h2 {
-		font-size: 1em;
-		margin-top: 0;
-	}
-
-	:global(h1:first-of-type) {
-		margin: 0.5em 0;
+	:global(h1:first-child) {
+		margin: 0;
 	}
 
 	:global(h1, h2, h3, h4, h5, h6, p, li) {
