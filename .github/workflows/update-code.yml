@@ -6,7 +6,7 @@ on:
   repository_dispatch:
     types: [update-cofd]
 jobs:
-  publish-npm:
+  update-code:
     runs-on: ubuntu-latest
     permissions:
       contents: read
