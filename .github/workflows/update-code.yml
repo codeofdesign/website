@@ -1,0 +1,28 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
+name: Update codeofdesign package
+
+on:
+  repository_dispatch:
+    types: [update-cofd]
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{secrets.GH_TOKEN}}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - run: |
+          git config user.name 'Simon Dagfinrud'
+          git config user.email '17279882+s-rd@users.noreply.github.com'
+          npm i --save codeofdesign@"<1.0.0"
+          git commit -m 'Update codeofdesign'
+          git push origin main
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          GH_TOKEN: ${{secrets.GH_TOKEN}}
