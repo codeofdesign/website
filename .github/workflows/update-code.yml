@@ -23,7 +23,7 @@ jobs:
           npm i --save codeofdesign@"<1.0.0"
           export COFDVER=$(npm view codeofdesign version)
           git add .
-          git commit -m "Update: codeofdesign v$VER"
+          git commit -m "Update: codeofdesign v$COFDVER"
           git push origin main
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
