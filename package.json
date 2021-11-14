@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "rollup -c",
+    "build:newcode": "npm i --save codeofdesign@'<1.0.0' && rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear --port 5555"
   },
