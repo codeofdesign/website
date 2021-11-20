@@ -46,6 +46,8 @@ export default {
 			targets: [
 				{ src: 'node_modules/@codeofdesign/fonts/fk-raster-roman', dest: 'public/fonts' },
 			],
+			copyOnce: true,
+			hook: 'transform',
 		}),
 
 		// process svelte
