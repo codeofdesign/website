@@ -1,6 +1,8 @@
 <script>
   import { onMount } from 'svelte'
-  // import versions from 'codeofdesign'
+  import cofd from 'codeofdesign'
+  import en_US from 'codeofdesign/dist/json/en_US.json'
+  import nn from 'codeofdesign/dist/json/nn.json'
 
   let disp = ''
 
@@ -14,8 +16,15 @@
   // our previous Base64-encoded string
 
   onMount(() => {
-    console.log('hei')
+    console.log(cofd, en_US)
     // const str = versions[0]
+
+    setTimeout(async () => {
+      const id = 'nb'
+      // const res = await import(`codeofdesign/dist/json/${id}.json`)
+      const res = await import(`../package.json`)
+      console.log(res)
+    }, 2000)
 
     // // disp = b64DecodeUnicode('4pyTIMOgIGxhIG1vZGU')
     // disp = b64DecodeUnicode(str.substring(str.indexOf(",") + 1))
@@ -23,7 +32,7 @@
   })
 </script>
 
-heisann!
+code of design
 
 {disp}
 

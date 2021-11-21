@@ -2,12 +2,12 @@ import svelte from 'rollup-plugin-svelte';
 import preprocess from 'svelte-preprocess';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
+import json from '@rollup/plugin-json';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import scss from 'rollup-plugin-scss';
 import copy from 'rollup-plugin-copy';
-import markdown from '@jackfranklin/rollup-plugin-markdown';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -38,7 +38,8 @@ export default {
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: 'public/build/bundle.js'
+		file: 'public/build/bundle.js',
+    inlineDynamicImports: true,
 	},
 	plugins: [
 		// get fonts from type module
@@ -49,6 +50,8 @@ export default {
 			copyOnce: true,
 			hook: 'transform',
 		}),
+
+		json(),
 
 		// process svelte
 		svelte({
@@ -64,8 +67,6 @@ export default {
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
 		css({ output: 'bundle.css' }),
-
-    markdown(),
 
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
