@@ -8,6 +8,7 @@ import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import scss from 'rollup-plugin-scss';
 import copy from 'rollup-plugin-copy';
+import dynamicImportVars from '@rollup/plugin-dynamic-import-vars';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -36,16 +37,16 @@ export default {
 	input: 'src/main.js',
 	output: {
 		sourcemap: true,
-		format: 'iife',
+		format: 'es',
 		name: 'app',
-		file: 'public/build/bundle.js',
-    inlineDynamicImports: true,
+		dir: 'public/build/',
 	},
 	plugins: [
 		// get fonts from type module
 		copy({
 			targets: [
 				{ src: 'node_modules/@codeofdesign/fonts/fk-raster-roman', dest: 'public/fonts' },
+				{ src: 'node_modules/codeofdesign/dist/json/*.json', dest: 'public/versions' },
 			],
 			copyOnce: true,
 			hook: 'transform',
@@ -61,12 +62,14 @@ export default {
 	    preprocess: preprocess(),
 		}),
 
-		// process sass
-		scss(),
 
+		// process sass
+		scss({ output: 'public/build/bundle.css' }),
+
+		dynamicImportVars({}),
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
-		css({ output: 'bundle.css' }),
+		css({ output: 'public/build/bundle.css' }),
 
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In

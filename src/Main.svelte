@@ -19,10 +19,9 @@
     console.log(cofd, en_US)
     // const str = versions[0]
 
+    const id = 'nb'
     setTimeout(async () => {
-      const id = 'nb'
-      // const res = await import(`codeofdesign/dist/json/${id}.json`)
-      const res = await import(`../package.json`)
+      const res = await import(`../public/versions/${id}.json`)
       console.log(res)
     }, 2000)
 
