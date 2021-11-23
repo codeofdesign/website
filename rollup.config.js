@@ -36,7 +36,7 @@ function serve() {
 export default {
 	input: 'src/main.js',
 	output: {
-		sourcemap: true,
+		sourcemap: !production && true,
 		format: 'es',
 		name: 'app',
 		dir: 'public/build/',
@@ -46,6 +46,7 @@ export default {
 		copy({
 			targets: [
 				{ src: 'node_modules/@codeofdesign/fonts/fk-raster-roman', dest: 'public/fonts' },
+				{ src: 'node_modules/@codeofdesign/fonts/public-sans', dest: 'public/fonts' },
 				{ src: 'node_modules/codeofdesign/dist/json/*.json', dest: 'public/versions' },
 			],
 			copyOnce: true,
@@ -66,7 +67,7 @@ export default {
 		// process sass
 		scss({ output: 'public/build/bundle.css' }),
 
-		dynamicImportVars({}),
+		dynamicImportVars({ sourcemap: false }),
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
 		css({ output: 'public/build/bundle.css' }),

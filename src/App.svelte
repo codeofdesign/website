@@ -1,75 +1,47 @@
 <script>
 	import { onMount } from 'svelte'
-	import versions from 'codeofdesign'
+	import Code from 'codeofdesign'
 
-	let content
+	import AppHeader from './components/AppHeader.svelte'
+	import AppFooter from './components/AppFooter.svelte'
+
 	let lang
-	let detectedLang
-	let translations = []
-
-	const getTranslation = id => {
-		lang = id
-		return versions.find(t => t.metadata.id === id) || false
-	}
-
-	const handleChange = () => {
-		if (lang === 'contribute') {
-			window.open('https://github.com/codeofdesign/code#contributing')
-			lang = detectedLang
-		}
-		content = getTranslation(lang).html
-	}
-
-	const getUserLanguage = () => {
-		// Not very smart way of detecting. @TODO: make something better
-		let loc = 'en_US'
-
-		try {
-			let userLangs = window.navigator.languages
-			loc = userLangs.find(l => {
-				return translations.find(t => t === l)
-			})
-		} catch (e) {
-			console.error(e)
-		} finally {
-			return loc
-		}
-	}
+	let content
 
 	onMount(() => {
-		translations = versions
-			.filter(f => f.metadata.complete)
-			.map(f => f.metadata.id)
+    console.log(Code)
 
-		detectedLang = getUserLanguage()
-		const translation = getTranslation(detectedLang)
-		content = translation.html
+		const id = 'nb'
+    setTimeout(async () => {
+      const res = await import(`../public/versions/${id}.json`)
+      console.log(res)
+    }, 2000)
+
+		// translations = versions
+		// 	.filter(f => f.metadata.complete)
+		// 	.map(f => f.metadata.id)
+
+		// detectedLang = getUserLanguage()
+		// const translation = getTranslation(detectedLang)
+		// content = translation.html
 	})
 </script>
 
-<main>
-	<select bind:value={lang} on:change={handleChange}>
-		{#each versions.filter(v => v.metadata.complete) as opt}
-			<option value={opt.metadata.id}>{opt.metadata.name}</option>
-		{/each}
-		<option disabled>---</option>
-		<option value="contribute">Add translation</option>
-	</select>
+<AppHeader />
 
-	{@html content}
+<main>
 </main>
 
+<AppFooter />
+
 <style lang="scss">
-	@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+	@use './assets/styles/main';
+  @use './public/fonts/fk-raster-roman/blended';
+  @use './public/fonts/public-sans';
 
 	main {
 		font-size: clamp(2rem, 4vw, 3rem);
-		font-family: 'Inter', sans-serif;
-	}
-
-	select {
-		font-size: 0.75em;
-		margin: 0;
+		font-family: 'Public Sans', Helvetica, sans-serif;
 	}
 
 	:global(h1:first-child) {
