@@ -12,6 +12,12 @@
     content = res.content.sections
   }
 
+  const handleChangeLocale = () => {
+    loadContent()
+  }
+
+  $: { $lang; handleChangeLocale() }
+
   onMount(() => {
     loadContent()
   })

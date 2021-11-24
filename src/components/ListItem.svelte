@@ -1,12 +1,6 @@
 <script>
-  import { onMount } from 'svelte'
-
   export let item
   export let index
-
-  onMount(() => {
-    console.log(item)
-  })
 </script>
 
 <li class="list-item">
