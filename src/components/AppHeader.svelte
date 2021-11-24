@@ -94,7 +94,7 @@
 
       @include from(medium) {
         order: 3;
-        grid-column: 16 / span 6;
+        grid-column: 17 / span 6;
       }
       @include from(large) {
         grid-column: 13 / span 6;

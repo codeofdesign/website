@@ -6,7 +6,8 @@
     font-family: 'Public Sans', Helvetica, sans-serif;
     font-size: 1.65rem;
     font-weight: 400;
-    background: var(--color-salmon);
+    background-color: var(--color-active-bg);
+    transition: ease 0.15s background-color;
   }
 
   .heading {
