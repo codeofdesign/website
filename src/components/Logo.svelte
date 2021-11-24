@@ -4,7 +4,7 @@
 
 <style lang="scss">
   .logo {
-    width: 3rem;
+    width: 3.5rem;
     height: auto;
   }
 </style>

@@ -4,8 +4,14 @@
 :global {
   body {
     font-family: 'Public Sans', Helvetica, sans-serif;
-    font-size: 1.5rem;
-    font-weight: 500;
+    font-size: 1.65rem;
+    font-weight: 400;
     background: var(--color-salmon);
+  }
+
+  .heading {
+    font-family: 'FK Raster Roman Blended';
+    letter-spacing: 0.03em;
+    line-height: 1.05em;
   }
 }

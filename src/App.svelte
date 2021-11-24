@@ -1,12 +1,23 @@
 <script>
 	import { onMount } from 'svelte'
+  import { Router, Route } from 'svelte-routing'
 	import Code from 'codeofdesign'
 
+  // Components
 	import AppHeader from './components/AppHeader.svelte'
 	import AppFooter from './components/AppFooter.svelte'
 
+  // Routes
+  import Home from './pages/Home.svelte'
+  import About from './pages/About.svelte'
+  import Contribute from './pages/Contribute.svelte'
+  import License from './pages/License.svelte'
+  import Resources from './pages/Resources.svelte'
+
 	let lang
 	let content
+
+  let url = ''
 
 	onMount(() => {
     console.log(Code)
@@ -16,23 +27,22 @@
       const res = await import(`../public/versions/${id}.json`)
       console.log(res)
     }, 2000)
-
-		// translations = versions
-		// 	.filter(f => f.metadata.complete)
-		// 	.map(f => f.metadata.id)
-
-		// detectedLang = getUserLanguage()
-		// const translation = getTranslation(detectedLang)
-		// content = translation.html
 	})
 </script>
 
-<AppHeader />
+<Router url={url}>
+  <AppHeader />
 
-<main>
-</main>
+  <main>
+    <Route path="about" component={About}/>
+    <Route path="contribute" component={Contribute}/>
+    <Route path="license" component={License}/>
+    <Route path="resources" component={Resources}/>
+    <Route path="/"><Home/></Route>
+  </main>
 
-<AppFooter />
+  <AppFooter />
+</Router>
 
 <style lang="scss">
 	@use './assets/styles/main';
@@ -42,6 +52,7 @@
 	main {
 		font-size: clamp(2rem, 4vw, 3rem);
 		font-family: 'Public Sans', Helvetica, sans-serif;
+    padding: 5rem 1rem;
 	}
 
 	:global(h1:first-child) {
