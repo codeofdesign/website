@@ -4,7 +4,8 @@
   import Logo from './Logo.svelte'
   import AppNav from './AppNav.svelte'
 
-  let header
+  export let header
+
   let shadow
 
   const onResize = () => {
@@ -24,7 +25,7 @@
   bind:this={header}
 >
   <div class="header-logo">
-    <Link to="/"><Logo/></Link>
+    <Link to="/" title="Go to homepage"><Logo/></Link>
   </div>
   <h2 class="header-intro">
     <span>
@@ -51,6 +52,7 @@
     width: 100vw;
     height: auto;
     padding: 1rem;
+    border-bottom: solid 1px transparent;
 
     &-logo {
       order: 1;
@@ -105,5 +107,11 @@
   .header-shadow {
     display: block;
     width: 100%;
+  }
+
+  :global(.header.scrolled) {
+    border-color: var(--color-dark);
+    background-color: var(--color-active-bg);
+    z-index: 10;
   }
 </style>

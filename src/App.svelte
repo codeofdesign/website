@@ -1,7 +1,6 @@
 <script>
   import { onMount } from 'svelte'
   import { Router, Route } from 'svelte-routing'
-  import Code from 'codeofdesign'
 
   // Components
   import AppHeader from './components/AppHeader.svelte'
@@ -15,36 +14,33 @@
   import Resources from './pages/Resources.svelte'
 
   let lang
-  let content
-
   let url = ''
 
   /**
    *  Scroll
    */
   let hasScrolled = false
+  let header
 
   const onScroll = ev => {
     const y = window.scrollY
-    if (y > 50) {
+    if (!hasScrolled && y > 50) {
       hasScrolled = true
       document.documentElement.style.setProperty('--color-active-bg', 'var(--color-light)')
 
-    } else {
+    } else if (hasScrolled && y < 50) {
       hasScrolled = false
       document.documentElement.style.setProperty('--color-active-bg', 'var(--color-salmon)')
     }
+
+    // if (hasScrolled && y > 300) {
+    //   header.classList.add('scrolled')
+    // } else {
+    //   header.classList.remove('scrolled')
+    // }
   }
 
   onMount(() => {
-    /*
-    console.log(Code)
-    const id = 'nb'
-    setTimeout(async () => {
-      const res = await import(`../public/versions/${id}.json`)
-      console.log(res)
-    }, 2000)
-    */
 
     window.addEventListener('scroll', onScroll)
   })
@@ -52,7 +48,7 @@
 
 <div class="root" class:scrolled={hasScrolled}>
   <Router url={url}>
-    <AppHeader />
+    <AppHeader bind:header={header} />
 
     <main>
       <Route path="about" component={About}/>
@@ -84,10 +80,9 @@
 
   main {
     position: relative;
-    font-size: clamp(2rem, 4vw, 3rem);
     font-family: 'Public Sans', Helvetica, sans-serif;
     margin: 10rem 0;
-    padding: 1rem;
+    padding: 2rem 0;
     min-height: 200vh;
     background-color: inherit;
     border-top: solid 1px transparent;

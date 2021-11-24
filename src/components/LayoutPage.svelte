@@ -1,11 +1,13 @@
 <script>
-  export let title
+  export let title = false
 </script>
 
 <div class="page">
-  <div class="page-title">
-    <h1 class="heading">{title}</h1>
-  </div>
+  {#if title}
+    <div class="page-title">
+      <h1 class="heading">{title}</h1>
+    </div>
+  {/if}
   <div class="page-content">
     <slot/>
   </div>
