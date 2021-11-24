@@ -40,7 +40,7 @@
 </header>
 
 <style lang="scss">
-  @use '../assets/styles/mixins';
+  @use '../assets/styles/mixins' as *;
 
   .header {
     @extend %col-grid;
@@ -53,23 +53,52 @@
     padding: 1rem;
 
     &-logo {
-      grid-column: span 2;
+      order: 1;
+      grid-column: span 4;
+
+      @include from(medium) {
+        grid-column: span 3;
+      }
+      @include from(large) {
+        grid-column: span 2;
+      }
     }
     &-intro {
-      grid-column: span 10;
+      order: 3;
+      grid-column: span 24;
       width: 100%;
-      max-width: 24rem;
       white-space: pre-line;
       line-height: 0.95em;
+      margin-top: 4rem;
 
       span {
         margin-bottom: 0.35rem;
         display: inline-block;
         text-indent: 2em;
       }
+
+      @include from(medium) {
+        order: 2;
+        grid-column: span 12;
+        max-width: 24rem;
+        margin-top: 0;
+      }
+
+      @include from(large) {
+        grid-column: span 10;
+      }
     }
     &-nav {
-      grid-column: 13 / span 6;
+      order: 2;
+      grid-column: 13 / span 12;
+
+      @include from(medium) {
+        order: 3;
+        grid-column: 16 / span 6;
+      }
+      @include from(large) {
+        grid-column: 13 / span 6;
+      }
     }
   }
 
