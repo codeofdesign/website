@@ -54,8 +54,6 @@
     }
     .body {
       grid-column: span 12;
-      line-height: 1em;
-      letter-spacing: 0.03em;
       white-space: pre-line;
 
       @include from(medium) {
@@ -75,5 +73,7 @@
   :global(.list-item p) {
     text-indent: 2em;
     margin-bottom: 0.35rem;
+    line-height: 1em;
+    letter-spacing: 0.03em;
   }
 </style>
