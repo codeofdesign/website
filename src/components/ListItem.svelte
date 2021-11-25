@@ -23,11 +23,17 @@
     &::before {
       content: counter(item);
       font-feature-settings: 'tnum' on, 'lnum' on;
+
+      @include from(medium) {
+        position: sticky;
+        top: 6.5rem;
+        height: 3rem;
+      }
     }
 
     .title {
       font-family: 'FK Raster Roman Blended';
-      font-size: 3.25rem;
+      font-size: 2.5rem;
       margin: 2rem 0;
       @include from(medium) {
         font-size: 4rem;

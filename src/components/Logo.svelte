@@ -3,8 +3,14 @@
 </svg>
 
 <style lang="scss">
+  @use '../assets/styles/mixins' as *;
+
   .logo {
-    width: 3.5rem;
+    width: 3rem;
     height: auto;
+
+    @include from(small) {
+      width: 3.5rem;
+    }
   }
 </style>

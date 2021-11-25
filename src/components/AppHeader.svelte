@@ -17,7 +17,10 @@
     if (!top) top = true
   }
   export const moveBack = () => {
-    if (top) top = false
+    if (top) {
+      onMouseleave()
+      top = false
+    }
   }
 
   const onResize = () => {
@@ -153,7 +156,7 @@
 
     &.top {
       z-index: 3;
-      height: 5.3rem;
+      height: 4.8rem;
       overflow: hidden;
       border-color: var(--color-dark);
       transition: ease 0.15s background-color,
@@ -167,6 +170,10 @@
         .header-fade {
           opacity: 0;
         }
+      }
+
+      @include from(small) {
+        height: 5.3rem;
       }
     }
   }

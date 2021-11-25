@@ -47,11 +47,13 @@
   }
 
   const setHeaderTransition = () => {
-    const scrollOffset = window.scrollY
+    const { scrollY, innerWidth } = window
     const mainPos = main.getBoundingClientRect().top
-    const headerHeight = remToPx(5.3)
+    const headerHeight = innerWidth > 400
+      ? remToPx(5.3)
+      : remToPx(4.8)
 
-    mainY = scrollOffset + mainPos - headerHeight
+    mainY = scrollY + mainPos - headerHeight
   }
 
   onMount(async () => {

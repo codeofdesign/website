@@ -1,18 +1,27 @@
 @use './reset';
 @use './variables';
+@use './mixins' as *;
 
 :global {
   body {
     font-family: 'Public Sans', Helvetica, sans-serif;
-    font-size: 1.65rem;
+    font-size: 1.4rem;
     font-weight: 400;
     background-color: var(--color-active-bg);
     transition: ease 0.15s background-color;
+
+    @include from(medium) {
+      font-size: 1.65rem;
+    }
   }
 
   .heading {
     font-family: 'FK Raster Roman Blended';
     letter-spacing: 0.03em;
     line-height: 1.05em;
+  }
+
+  a, button {
+    -webkit-tap-highlight-color: transparent;
   }
 }
