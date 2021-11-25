@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte'
+  import { onMount, tick } from 'svelte'
   import { Router, Route } from 'svelte-routing'
 
   // Components
@@ -21,36 +21,52 @@
    */
   let hasScrolled = false
   let header
+  let headerEl
+  let main
+  let mainY
 
   const onScroll = ev => {
     const y = window.scrollY
     if (!hasScrolled && y > 50) {
       hasScrolled = true
       document.documentElement.style.setProperty('--color-active-bg', 'var(--color-light)')
-
     } else if (hasScrolled && y < 50) {
       hasScrolled = false
       document.documentElement.style.setProperty('--color-active-bg', 'var(--color-salmon)')
     }
 
-    // if (hasScrolled && y > 300) {
-    //   header.classList.add('scrolled')
-    // } else {
-    //   header.classList.remove('scrolled')
-    // }
+    if (hasScrolled && mainY && y > mainY) {
+      header.moveForward()
+    } else {
+      header.moveBack()
+    }
   }
 
-  onMount(() => {
+  const remToPx = (rem) => {
+    return rem * parseFloat(getComputedStyle(document.documentElement).fontSize)
+  }
 
-    window.addEventListener('scroll', onScroll)
+  const setHeaderTransition = () => {
+    const scrollOffset = window.scrollY
+    const mainPos = main.getBoundingClientRect().top
+    const headerHeight = remToPx(5.3)
+
+    mainY = scrollOffset + mainPos - headerHeight
+  }
+
+  onMount(async () => {
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', setHeaderTransition, { passive: true })
+    await tick()
+    setHeaderTransition()
   })
 </script>
 
 <div class="root" class:scrolled={hasScrolled}>
   <Router url={url}>
-    <AppHeader bind:header={header} />
+    <AppHeader bind:header={headerEl} bind:this={header}/>
 
-    <main>
+    <main bind:this={main}>
       <Route path="about" component={About}/>
       <Route path="contribute" component={Contribute}/>
       <Route path="license" component={License}/>
