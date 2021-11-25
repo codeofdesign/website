@@ -1,12 +1,20 @@
 <script>
   export let item
   export let index
+
+  const parseContent = c => {
+    // replace all newline characters with closing and opening
+    // paragraph tags - *except* if it's all the way at the end
+    return '<p>' + c.replace(/(?!\n$)\n/g, '</p><p>') + '</p>'
+  }
+
+  $: body = parseContent(item.body)
 </script>
 
 <li class="list-item">
   <h3 class="title">{item.title}</h3>
   <div class="body">
-    {item.body}
+    {@html body}
   </div>
 </li>
 
@@ -48,7 +56,6 @@
       grid-column: span 12;
       line-height: 1em;
       letter-spacing: 0.03em;
-      text-indent: 2em;
       white-space: pre-line;
 
       @include from(medium) {
@@ -63,5 +70,10 @@
       display: flex;
       flex-direction: column;
     }
+  }
+
+  :global(.list-item p) {
+    text-indent: 2em;
+    margin-bottom: 0.35rem;
   }
 </style>
