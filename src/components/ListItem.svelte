@@ -186,6 +186,9 @@
 
     &:first-child {
       border-top: none;
+      .fade {
+        display: none;
+      }
     }
 
     @include until(medium) {
