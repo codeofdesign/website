@@ -155,7 +155,7 @@
     }
 
     &.top {
-      z-index: 3;
+      z-index: var(--z-header-hover);
       height: 4.8rem;
       overflow: hidden;
       border-color: var(--color-dark);

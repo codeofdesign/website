@@ -64,7 +64,10 @@
   })
 </script>
 
-<div class="root" class:scrolled={hasScrolled}>
+<div
+  class="root"
+  class:scrolled={hasScrolled}
+>
   <Router url={url}>
     <AppHeader bind:header={headerEl} bind:this={header}/>
 
@@ -73,7 +76,7 @@
       <Route path="contribute" component={Contribute}/>
       <Route path="license" component={License}/>
       <Route path="resources" component={Resources}/>
-      <Route path="/"><Home/></Route>
+      <Route path="/"><Home {hasScrolled} /></Route>
     </main>
 
     <AppFooter />
@@ -100,7 +103,7 @@
     position: relative;
     font-family: 'Public Sans', Helvetica, sans-serif;
     margin: 10rem 0;
-    padding: 2rem 0;
+    padding: 0 0 2rem;
     min-height: 200vh;
     background-color: inherit;
     border-top: solid 1px transparent;

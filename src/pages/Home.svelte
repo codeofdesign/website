@@ -4,7 +4,11 @@
   import Page from '../components/LayoutPage.svelte'
   import List from '../components/List.svelte'
 
+  export let hasScrolled = false
+
   let content
+  let mode = 'read'
+  let collapsed = true
 
   const loadContent = async () => {
     const id = $lang
@@ -18,13 +22,15 @@
 
   $: { $lang; handleChangeLocale() }
 
+  $: collapsed = !hasScrolled
+
   onMount(() => {
     loadContent()
   })
 </script>
 
 <List
-  mode="read"
-  expanded={false}
   {content}
+  {mode}
+  {collapsed}
 />

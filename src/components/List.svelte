@@ -2,13 +2,13 @@
   import ListItem from './ListItem.svelte'
 
   export let mode = 'read'
-  export let expanded = false
+  export let collapsed = true
   export let content = []
 </script>
 
 <ol class="list">
   {#each content as item, index}
-    <ListItem {item} {index} />
+    <ListItem {item} {index} collapsed={index < 3 && collapsed} />
   {/each}
 </ol>
 
