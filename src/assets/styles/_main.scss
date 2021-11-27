@@ -11,6 +11,9 @@
     transition: ease 0.15s background-color;
 
     @include from(medium) {
+      font-size: 1.5rem;
+    }
+    @include from(large) {
       font-size: 1.65rem;
     }
   }

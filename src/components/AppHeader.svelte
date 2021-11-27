@@ -109,12 +109,16 @@
       width: 100%;
       white-space: pre-line;
       line-height: 0.95em;
-      margin-top: 4rem;
+      margin-top: 2rem;
 
       span {
         margin-bottom: 0.35rem;
         display: inline-block;
         text-indent: 2em;
+      }
+
+      @include from(small) {
+        grid-column: 13 / span 12;
       }
 
       @include from(medium) {
@@ -149,9 +153,13 @@
       left: 0;
       width: 100%;
       height: 5.3rem;
-      background: linear-gradient(to bottom, #fff0, #ffff 5rem);
+      background-image: url('/img/gradient-salmon-long.png');
+      background-size: auto 100%;
+      background-repeat: repeat-x;
+      backface-visibility: hidden;
       opacity: 0;
-      transition: ease 0.3s opacity;
+      transition: ease 0.3s opacity,
+                  ease 0.15s background-image;
     }
 
     &.top {
@@ -162,6 +170,9 @@
       transition: ease 0.15s background-color,
                   ease 0.3s height;
 
+      .header-intro {
+        display: none;
+      }
       .header-fade {
         opacity: 1;
       }
@@ -175,11 +186,20 @@
       @include from(small) {
         height: 5.3rem;
       }
+      @include from(medium) {
+        .header-intro {
+          display: block;
+        }
+      }
     }
   }
 
   .header-shadow {
     display: block;
     width: 100%;
+  }
+
+  :global(.scrolled .header .header-fade) {
+    background-image: url('/img/gradient-light-long.png');
   }
 </style>

@@ -1,6 +1,7 @@
 <script>
   import { onMount, tick } from 'svelte'
   import { Router, Route } from 'svelte-routing'
+  import { remToPx } from './util/dom'
 
   // Components
   import AppHeader from './components/AppHeader.svelte'
@@ -42,10 +43,6 @@
     }
   }
 
-  const remToPx = (rem) => {
-    return rem * parseFloat(getComputedStyle(document.documentElement).fontSize)
-  }
-
   const setHeaderTransition = () => {
     const { scrollY, innerWidth } = window
     const mainPos = main.getBoundingClientRect().top
@@ -85,6 +82,7 @@
 
 <style lang="scss">
   @use './assets/styles/main';
+  @use './assets/styles/mixins' as *;
   @use './public/fonts/fk-raster-roman/blended';
   @use './public/fonts/public-sans';
 
@@ -97,17 +95,27 @@
         border-top-color: var(--color-dark);
       }
     }
+
+    @include until(medium) {
+      main {
+        border-top-color: var(--color-dark);
+      }
+    }
   }
 
   main {
     position: relative;
     font-family: 'Public Sans', Helvetica, sans-serif;
-    margin: 10rem 0;
+    margin: 5rem 0;
     padding: 0 0 2rem;
     min-height: 200vh;
     background-color: inherit;
     border-top: solid 1px transparent;
     transition: ease 0.15s border-color;
+
+    @include from(medium) {
+      margin: 10rem 0;
+    }
   }
 
   :global(h1:first-child) {
