@@ -165,7 +165,7 @@
       }
       @include from(large) {
         grid-column: 3 / span 9;
-        font-size: clamp(2.75rem, 3.8vw, 4rem);
+        font-size: clamp(2.75rem, 3.8vw, 3.85rem);
       }
     }
     .body {
