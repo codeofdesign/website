@@ -7,22 +7,21 @@
   export let index
   export let collapsed = false
 
-  let height = undefined
-  let toHeight = undefined
   let opacity = 1
+  let height
+  let toHeight
 
   let min
   let max
-  let minScroll = 0
+  let minScroll
   let maxScroll
 
-  let titleEl
   let wrapperEl
   let fadeEl
 
   const parseContent = c => {
     // replace all newline characters with closing and opening
-    // paragraph tags - *except* if it's all the way at the end
+    // paragraph tags - *unless* it's all the way at the end
     return '<p>' + c.replace(/(?!\n$)\n/g, '</p><p>') + '</p>'
   }
 
@@ -36,7 +35,6 @@
   const defineMinMax = () => {
     const { innerWidth, innerHeight } = window
     max = wrapperEl.offsetHeight
-    // min = titleEl.offsetHeight
     min = innerHeight / (innerWidth < 700 ? 6 : 4)
     minScroll = 0
     maxScroll = innerHeight * 0.2
@@ -69,8 +67,6 @@
       height = min
       toHeight = min
 
-      setTimeout(() => max = wrapperEl.offsetHeight, 500)
-
       requestAnimationFrame(update)
 
       window.addEventListener('scroll', setItemHeights, { passive: true })
@@ -91,7 +87,7 @@
 
   <div class="wrapper" bind:this={wrapperEl}>
     <span class="number"/>
-    <h3 class="title" bind:this={titleEl}>{item.title}</h3>
+    <h3 class="title">{item.title}</h3>
     <div class="body">
       {@html body}
     </div>

@@ -8,7 +8,6 @@
 
   let content
   let mode = 'read'
-  let collapsed = true
 
   const loadContent = async () => {
     const id = $lang
@@ -32,5 +31,4 @@
 <List
   {content}
   {mode}
-  {collapsed}
 />
