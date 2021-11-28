@@ -151,9 +151,9 @@
 
     .title {
       font-family: 'FK Raster Roman Blended';
-      font-size: 2.5rem;
+      font-size: 2.1rem;
       margin: 0 0 1.5rem;
-      padding-left: 1.05em;
+      padding-left: 1.1em;
 
       @include from(medium) {
         font-size: 4rem;

@@ -24,6 +24,10 @@
     line-height: 1.05em;
   }
 
+  .root {
+    overflow: hidden;
+  }
+
   a, button {
     -webkit-tap-highlight-color: transparent;
   }
