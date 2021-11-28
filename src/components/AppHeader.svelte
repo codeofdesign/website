@@ -1,14 +1,17 @@
 <script>
   import { onMount } from 'svelte'
   import { Link } from 'svelte-routing'
+  import { remToPx } from '../util/dom'
   import Logo from './Logo.svelte'
   import AppNav from './AppNav.svelte'
 
   export let header = null
 
   let height
+  let openHeight
   let shadow
   let fade
+  let navEl
 
   let open = false
   let top = false
@@ -24,13 +27,21 @@
   }
 
   const onResize = () => {
+    const { innerWidth } = window
+
+    if (innerWidth < 768) {
+      openHeight = (navEl.offsetHeight + remToPx(2)) + 'px'
+    }
+
     height = header.offsetHeight + 'px'
+
     shadow.style.height = height
     fade.style.height = height
   }
   const onMouseenter = () => {
     open = true
-    if (top) header.style.height = height
+    if (top && openHeight) header.style.height = openHeight
+    else if (top) header.style.height = height
   }
   const onMouseleave = () => {
     open = false
@@ -68,7 +79,7 @@
       This code belongs to you. Make it yours, make it great.
     </span>
   </h2>
-  <div class="header-nav">
+  <div class="header-nav" bind:this={navEl}>
     <AppNav/>
   </div>
   <span class="header-fade" aria-hidden="true" bind:this={fade} />
