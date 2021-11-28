@@ -33,7 +33,7 @@
       openHeight = (navEl.offsetHeight + remToPx(2)) + 'px'
     }
 
-    height = header.offsetHeight + 'px'
+    if (!top) height = header.offsetHeight + 'px'
 
     shadow.style.height = height
     fade.style.height = height
@@ -181,9 +181,6 @@
       transition: ease 0.15s background-color,
                   ease 0.3s height;
 
-      .header-intro {
-        display: none;
-      }
       .header-fade {
         opacity: 1;
       }
