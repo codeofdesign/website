@@ -1,11 +1,13 @@
 <script>
   import { onMount, tick } from 'svelte'
   import { map, mapClamp, lerp } from '../util/math'
-  import { remToPx } from '../util/dom'
+  import { parseContent, remToPx } from '../util/dom'
 
   export let item
   export let index
   export let collapsed = false
+
+  let contentLoaded = false
 
   let opacity = 1
   let height
@@ -19,16 +21,11 @@
   let wrapperEl
   let fadeEl
 
-  const parseContent = c => {
-    // replace all newline characters with closing and opening
-    // paragraph tags - *unless* it's all the way at the end
-    return '<p>' + c.replace(/(?!\n$)\n/g, '</p><p>') + '</p>'
-  }
-
   const update = () => {
-    if (height) height = lerp(height, toHeight, 0.15)
-    if (fadeEl) fadeEl.style.opacity = opacity
-
+    if (contentLoaded) {
+      if (height) height = lerp(height, toHeight, 0.15)
+      if (fadeEl) fadeEl.style.opacity = opacity
+    }
     requestAnimationFrame(update)
   }
 
@@ -38,11 +35,10 @@
     min = innerHeight / (innerWidth < 700 ? 6 : 4)
     minScroll = 0
     maxScroll = innerHeight * 0.2
-
-    setItemHeights()
   }
 
   const setItemHeights = () => {
+    if (max !== wrapperEl.offsetHeight) max = wrapperEl.offsetHeight
     const y = window.scrollY
     if (y < maxScroll) {
       toHeight = map(y, minScroll, maxScroll, min, max)
@@ -56,21 +52,31 @@
     }
   }
 
+  const onContentLoad = async () => {
+    if (!collapsed) return
+
+    await tick()
+
+    height = min
+    toHeight = min
+
+    await tick()
+
+    contentLoaded = true
+  }
+
   $: body = parseContent(item.body)
+  $: if (item) onContentLoad()
+  $: if (contentLoaded) {
+    defineMinMax()
+    setItemHeights()
+  }
 
-  onMount(async () => {
+  onMount(() => {
     if (collapsed) {
-      await tick()
-
-      defineMinMax()
-
-      height = min
-      toHeight = min
-
-      requestAnimationFrame(update)
-
       window.addEventListener('scroll', setItemHeights, { passive: true })
       window.addEventListener('resize', defineMinMax, { passive: true })
+      requestAnimationFrame(update)
     }
   })
 </script>
@@ -79,7 +85,6 @@
   class="list-item"
   class:collapsed={collapsed}
   style={`
-    z-index: ${index};
     ${height ? ('height: ' + Math.round(height * 10) / 10 + 'px;') : ''}
   `}
 >
@@ -107,7 +112,7 @@
     background-color: var(--color-active-bg);
 
     .fade {
-      display: block;
+      display: none;
       position: absolute;
       background-image: url('/img/gradient-salmon.png');
       background-size: auto 100%;
@@ -168,6 +173,7 @@
         font-size: clamp(2.75rem, 3.8vw, 3.85rem);
       }
     }
+
     .body {
       grid-column: span 12;
       white-space: pre-line;
@@ -184,6 +190,19 @@
       border-top: none;
       .fade {
         display: none;
+      }
+    }
+    &:last-child {
+      border-bottom: solid 1px var(--color-dark);
+    }
+
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) { z-index: $i; }
+    }
+
+    &.collapsed {
+      .fade {
+        display: block;
       }
     }
 

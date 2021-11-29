@@ -1,11 +1,12 @@
 <script>
-  import { onMount } from 'svelte'
+  import { onMount, tick } from 'svelte'
   import { Link } from 'svelte-routing'
-  import { remToPx } from '../util/dom'
+  import { parseContent, remToPx } from '../util/dom'
   import Logo from './Logo.svelte'
   import AppNav from './AppNav.svelte'
 
   export let header = null
+  export let content
 
   let height
   let openHeight
@@ -26,7 +27,9 @@
     }
   }
 
-  const onResize = () => {
+  const onResize = async () => {
+    await tick()
+
     const { innerWidth } = window
 
     if (innerWidth < 768) {
@@ -47,6 +50,8 @@
     open = false
     if (top) header.style = null
   }
+
+  $: if (content) onResize()
 
   onMount(() => {
     onResize()
@@ -72,15 +77,12 @@
     <Link to="/" title="Go to homepage"><Logo/></Link>
   </div>
   <h2 class="header-intro">
-    <span>
-      Design needs a code of ethics. This is a start—but we only know what we know. Our point of view is limited to our own experiences.
-    </span>
-    <span>
-      This code belongs to you. Make it yours, make it great.
-    </span>
+    {#if content}
+      {@html parseContent(content.header.intro, 'span')}
+    {/if}
   </h2>
   <div class="header-nav" bind:this={navEl}>
-    <AppNav/>
+    <AppNav {content}/>
   </div>
   <span class="header-fade" aria-hidden="true" bind:this={fade} />
 </header>
@@ -121,12 +123,6 @@
       white-space: pre-line;
       line-height: 0.95em;
       margin-top: 2rem;
-
-      span {
-        margin-bottom: 0.35rem;
-        display: inline-block;
-        text-indent: 2em;
-      }
 
       @include from(small) {
         grid-column: 13 / span 12;
@@ -205,6 +201,12 @@
   .header-shadow {
     display: block;
     width: 100%;
+  }
+
+  :global(.header .header-intro span) {
+    margin-bottom: 0.35rem;
+    display: inline-block;
+    text-indent: 2em;
   }
 
   :global(.scrolled .header .header-fade) {

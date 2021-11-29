@@ -3,11 +3,13 @@
 
   export let mode = 'read'
   export let content = []
+
+  const collapsedAmount = 4
 </script>
 
 <ol class="list">
   {#each content as item, index}
-    <ListItem {item} {index} collapsed={index < 4} />
+    <ListItem {item} {index} collapsed={index < collapsedAmount} />
   {/each}
 </ol>
 

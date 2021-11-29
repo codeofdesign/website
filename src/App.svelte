@@ -1,6 +1,7 @@
 <script>
   import { onMount, tick } from 'svelte'
   import { Router, Route } from 'svelte-routing'
+  import { lang } from './store'
   import { remToPx } from './util/dom'
 
   // Components
@@ -14,8 +15,8 @@
   import License from './pages/License.svelte'
   import Resources from './pages/Resources.svelte'
 
-  let lang
   let url = ''
+  let content
 
   /**
    *  Scroll
@@ -53,7 +54,22 @@
     mainY = scrollY + mainPos - headerHeight
   }
 
+  const loadContent = async () => {
+    const id = $lang
+    const res = await import(`./content/${id}.json`)
+    content = res.default
+    return Promise.resolve(res => res())
+  }
+
+  const handleChangeLocale = () => {
+    loadContent()
+  }
+
+  $: { $lang; handleChangeLocale() }
+
   onMount(async () => {
+    await loadContent()
+
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', setHeaderTransition, { passive: true })
     await tick()
@@ -66,7 +82,11 @@
   class:scrolled={hasScrolled}
 >
   <Router url={url}>
-    <AppHeader bind:header={headerEl} bind:this={header}/>
+    <AppHeader
+      bind:header={headerEl}
+      bind:this={header}
+      {content}
+    />
 
     <main bind:this={main}>
       <Route path="about" component={About}/>
@@ -76,7 +96,7 @@
       <Route path="/"><Home {hasScrolled} /></Route>
     </main>
 
-    <AppFooter />
+    <AppFooter {content} />
   </Router>
 </div>
 
@@ -106,15 +126,15 @@
   main {
     position: relative;
     font-family: 'Public Sans', Helvetica, sans-serif;
-    margin: 5rem 0;
-    padding: 0 0 2rem;
+    margin: 5rem 0 0;
+    padding: 0;
     min-height: 200vh;
     background-color: inherit;
     border-top: solid 1px transparent;
     transition: ease 0.15s border-color;
 
     @include from(medium) {
-      margin: 10rem 0;
+      margin: 10rem 0 0;
     }
   }
 
