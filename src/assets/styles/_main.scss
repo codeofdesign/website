@@ -27,4 +27,12 @@
   a, button {
     -webkit-tap-highlight-color: transparent;
   }
+
+  ::selection {
+    background-color: var(--color-red);
+  }
+
+  .scrolled ::selection {
+    background-color: var(--color-salmon);
+  }
 }
