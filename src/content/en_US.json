@@ -1,0 +1,16 @@
+{
+  "header": {
+    "intro": "Design needs a code of ethics. This is a start—but we only know what we know. Our point of view is limited to our own experiences.\nThis code belongs to you. Make it yours, make it great."
+  },
+  "nav": {
+    "list": "List",
+    "read": "Read",
+    "about": "About",
+    "contribute": "Contribute",
+    "license": "License",
+    "resources": "Resources"
+  },
+  "footer": {
+    "intro": "This code is a start. Not only does it belong to you—it needs you to keep improving it.\nIs it missing your perspective? [Get involved]!"
+  }
+}

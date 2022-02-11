@@ -1,0 +1,39 @@
+@use './reset';
+@use './variables';
+@use './mixins' as *;
+
+:global {
+  body {
+    font-family: 'Public Sans', Helvetica, sans-serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    background-color: var(--color-active-bg);
+    transition: ease 0.15s background-color;
+
+    @include from(medium) {
+      font-size: 1.5rem;
+    }
+    @include from(large) {
+      font-size: 1.65rem;
+      font-size: clamp(1.65rem, 2vw, 2rem);
+    }
+  }
+
+  .heading {
+    font-family: 'FK Raster Roman Blended';
+    letter-spacing: 0.03em;
+    line-height: 1.05em;
+  }
+
+  a, button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  ::selection {
+    background-color: var(--color-red);
+  }
+
+  .scrolled ::selection {
+    background-color: var(--color-salmon);
+  }
+}

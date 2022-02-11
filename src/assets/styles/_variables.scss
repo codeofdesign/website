@@ -1,0 +1,19 @@
+:root {
+
+  /**
+   *  Colors
+   */
+  --color-salmon: #FF8878;
+  --color-salmon-rgb: 255, 135, 120;
+  --color-red: #FF0000;
+  --color-light: #FFFFFF;
+  --color-light-rgb: 255, 255, 255;
+  --color-dark: #000000;
+  --color-active-bg: var(--color-salmon);
+
+  /**
+   *  Z-index
+   */
+  --z-header: 1;
+  --z-header-hover: 50;
+}

@@ -1,89 +1,155 @@
 <script>
-	import { onMount } from 'svelte'
-	import versions from 'codeofdesign'
+  import { onMount, tick } from 'svelte'
+  import { Router, Route } from 'svelte-routing'
+  import { lang } from './store'
+  import { remToPx } from './util/dom'
 
-	let content
-	let lang
-	let detectedLang
-	let translations = []
+  // Components
+  import AppHeader from './components/AppHeader.svelte'
+  import AppFooter from './components/AppFooter.svelte'
 
-	const getTranslation = id => {
-		lang = id
-		return versions.find(t => t.metadata.id === id) || false
-	}
+  // Routes
+  import Home from './pages/Home.svelte'
+  import About from './pages/About.svelte'
+  import Contribute from './pages/Contribute.svelte'
+  import License from './pages/License.svelte'
+  import Resources from './pages/Resources.svelte'
 
-	const handleChange = () => {
-		if (lang === 'contribute') {
-			window.open('https://github.com/codeofdesign/code#contributing')
-			lang = detectedLang
-		}
-		content = getTranslation(lang).html
-	}
+  let url = ''
+  let content
 
-	const getUserLanguage = () => {
-		// Not very smart way of detecting. @TODO: make something better
-		let loc = 'en_US'
+  /**
+   *  Scroll
+   */
+  let hasScrolled = false
+  let header
+  let headerEl
+  let main
+  let mainY
 
-		try {
-			let userLangs = window.navigator.languages
-			loc = userLangs.find(l => {
-				return translations.find(t => t === l)
-			})
-		} catch (e) {
-			console.error(e)
-		} finally {
-			return loc
-		}
-	}
+  const onScroll = ev => {
+    const y = window.scrollY
+    if (!hasScrolled && y > 50) {
+      hasScrolled = true
+      document.documentElement.style.setProperty('--color-active-bg', 'var(--color-light)')
+    } else if (hasScrolled && y < 50) {
+      hasScrolled = false
+      document.documentElement.style.setProperty('--color-active-bg', 'var(--color-salmon)')
+    }
 
-	onMount(() => {
-		translations = versions
-			.filter(f => f.metadata.complete)
-			.map(f => f.metadata.id)
+    if (hasScrolled && mainY && y > mainY) {
+      header.moveForward()
+    } else {
+      header.moveBack()
+    }
+  }
 
-		detectedLang = getUserLanguage()
-		const translation = getTranslation(detectedLang)
-		content = translation.html
-	})
+  const setHeaderTransition = () => {
+    const { scrollY, innerWidth } = window
+    const mainPos = main.getBoundingClientRect().top
+    const headerHeight = innerWidth > 400
+      ? remToPx(5.3)
+      : remToPx(4.8)
+
+    mainY = scrollY + mainPos - headerHeight
+  }
+
+  const loadContent = async () => {
+    const id = $lang
+    const res = await import(`./content/${id}.json`)
+    content = res.default
+    return Promise.resolve(res => res())
+  }
+
+  const handleChangeLocale = () => {
+    loadContent()
+  }
+
+  $: { $lang; handleChangeLocale() }
+
+  onMount(async () => {
+    await loadContent()
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', setHeaderTransition, { passive: true })
+    await tick()
+    setHeaderTransition()
+  })
 </script>
 
-<main>
-	<select bind:value={lang} on:change={handleChange}>
-		{#each versions.filter(v => v.metadata.complete) as opt}
-			<option value={opt.metadata.id}>{opt.metadata.name}</option>
-		{/each}
-		<option disabled>---</option>
-		<option value="contribute">Add translation</option>
-	</select>
+<div
+  class="root"
+  class:scrolled={hasScrolled}
+>
+  <Router url={url}>
+    <AppHeader
+      bind:header={headerEl}
+      bind:this={header}
+      {content}
+    />
 
-	{@html content}
-</main>
+    <main bind:this={main}>
+      <Route path="about" component={About}/>
+      <Route path="contribute" component={Contribute}/>
+      <Route path="license" component={License}/>
+      <Route path="resources" component={Resources}/>
+      <Route path="/"><Home {hasScrolled} /></Route>
+    </main>
+
+    <AppFooter {content} />
+  </Router>
+</div>
 
 <style lang="scss">
-	@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+  @use './assets/styles/main';
+  @use './assets/styles/mixins' as *;
+  @use './public/fonts/fk-raster-roman/blended';
+  @use './public/fonts/public-sans';
 
-	main {
-		font-size: clamp(2rem, 4vw, 3rem);
-		font-family: 'Inter', sans-serif;
-	}
+  .root {
+    transition: ease 0.15s background-color;
+    background-color: var(--color-active-bg);
 
-	select {
-		font-size: 0.75em;
-		margin: 0;
-	}
+    &.scrolled {
+      main {
+        border-top-color: var(--color-dark);
+      }
+    }
 
-	:global(h1:first-child) {
-		margin: 0;
-	}
+    @include until(medium) {
+      main {
+        border-top-color: var(--color-dark);
+      }
+    }
+  }
 
-	:global(h1, h2, h3, h4, h5, h6, p, li) {
-		line-height: 1.1em;
-	}
+  main {
+    position: relative;
+    font-family: 'Public Sans', Helvetica, sans-serif;
+    margin: 5rem 0 0;
+    padding: 0;
+    min-height: 200vh;
+    background-color: inherit;
+    border-top: solid 1px transparent;
+    transition: ease 0.15s border-color;
 
-	:global(a) {
-		color: #f00;
-	}
-	:global(a:visited) {
-		color: #E46F6F;
-	}
+    @include from(medium) {
+      margin: 10rem 0 0;
+    }
+  }
+
+  :global(h1:first-child) {
+    margin: 0;
+  }
+
+  :global(h1, h2, h3, h4, h5, h6, p, li) {
+    line-height: 1.1em;
+  }
+
+  :global(a) {
+    color: #f00;
+  }
+  :global(a:visited) {
+    color: #E46F6F;
+  }
 </style>

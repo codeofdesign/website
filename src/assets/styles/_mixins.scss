@@ -1,0 +1,37 @@
+@use 'sass:map';
+
+/**
+ *  Breakpoints
+ */
+$breakpoints: (
+  'small': '420px',
+  'medium': '768px',
+  'large': '1280px',
+  'xlarge': '1440px',
+);
+
+@mixin from($bp) {
+  @media screen and (min-width: map.get($breakpoints, $bp)) {
+    @content;
+  }
+}
+
+@mixin until($bp) {
+  @media screen and (max-width: map.get($breakpoints, $bp)) {
+    @content;
+  }
+}
+
+/**
+ *  Styles
+ */
+%col-grid {
+  display: grid;
+  grid-template-columns: repeat(24, 1fr);
+  grid-column-gap: 0.25rem;
+  box-sizing: border-box;
+
+  @include from(medium) {
+    grid-column-gap: 1rem;
+  }
+}
