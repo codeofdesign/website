@@ -137,6 +137,7 @@
 
       @include from(large) {
         grid-column: span 10;
+        max-width: 30rem;
       }
     }
     &-nav {
