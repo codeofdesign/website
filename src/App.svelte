@@ -25,14 +25,19 @@
 		let loc = 'en_US'
 
 		try {
-			let userLangs = window.navigator.languages
-			loc = userLangs.find(l => {
+			const userLangs = window.navigator.languages
+			const foundLang = userLangs.find(l => {
 				return translations.find(t => t === l)
 			})
+
+      console.log(userLangs)
+      if (typeof foundLang !== 'undefined') {
+        loc = foundLang
+      }
 		} catch (e) {
 			console.error(e)
 		} finally {
-			return loc
+		  return loc
 		}
 	}
 
@@ -42,13 +47,19 @@
 			.map(f => f.metadata.id)
 
 		detectedLang = getUserLanguage()
+    console.log(detectedLang)
 		const translation = getTranslation(detectedLang)
 		content = translation.html
 	})
 </script>
 
 <main>
-	<select bind:value={lang} on:change={handleChange}>
+	<select 
+    label="Select language"
+    bind:value={lang}
+    on:change={handleChange}
+  >
+    <option disabled>Select language</option>
 		{#each versions.filter(v => v.metadata.complete) as opt}
 			<option value={opt.metadata.id}>{opt.metadata.name}</option>
 		{/each}
@@ -59,18 +70,53 @@
 	{@html content}
 </main>
 
-<style lang="scss">
-	@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+<hr>
 
-	main {
-		font-size: clamp(2rem, 4vw, 3rem);
-		font-family: 'Inter', sans-serif;
-	}
+<footer>
+  <p>
+    Design needs a code of ethics. This is a start—but we only know what we know. Our point of view is limited to our own experiences.
+  </p>
+  <p>
+    This code belongs to you. Make it yours. Make it great.
+  </p>
+  <p>
+    <a target="_blank" href="https://github.com/codeofdesign/code">Contribute</a>,
+    <a target="_blank" href="https://github.com/codeofdesign/code#license">License</a>,
+    <a target="_blank" href="https://are.na/code-of-design">Arena</a>.
+  </p>
+</footer>
+
+<style lang="scss">
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
 
 	select {
-		font-size: 0.75em;
+		font-size: clamp(20px, 0.5em, 40px);
 		margin: 0;
+    appearance: none;
+    -webkit-apperance: none;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    border: 0.1em solid black;
+    color: black;
+    padding: 0.5em 0.5em;
+    font-weight: 500;
+    font-family: 'Inter';
 	}
+
+  select:focus {
+    background: black;
+    color: #0f0;
+    outline: solid 0.1em black;
+    outline-offset: 0.2em;
+  }
+
+  footer {
+    width: 50%;
+    max-width: 32ch;
+    padding: 0 0 0.5rem;
+    font-size: 0.5em;
+  }
 
 	:global(h1:first-child) {
 		margin: 0;
@@ -78,12 +124,5 @@
 
 	:global(h1, h2, h3, h4, h5, h6, p, li) {
 		line-height: 1.1em;
-	}
-
-	:global(a) {
-		color: #f00;
-	}
-	:global(a:visited) {
-		color: #E46F6F;
 	}
 </style>
