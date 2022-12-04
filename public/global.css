@@ -3,6 +3,12 @@
   font-style: normal;
   src: url('/inter-med.woff2') format('woff2');
 }
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: bold;
+  src: url('/inter-bold.woff2') format('woff2');
+}
 
 :root {
   font-size: clamp(1.35rem, 4vw, 3rem);
