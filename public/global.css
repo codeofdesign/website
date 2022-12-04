@@ -5,7 +5,7 @@
 }
 
 :root {
-  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-size: clamp(1.35rem, 4vw, 3rem);
 
   --spacing: 0.5rem;
 }

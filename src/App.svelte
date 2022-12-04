@@ -111,10 +111,10 @@
 
   footer {
     width: 50%;
-    min-width: 8rem;
+    min-width: 9rem;
     max-width: 32ch;
     padding: 0 0 0.5rem;
-    font-size: 0.5em;
+    font-size: clamp(16px, 0.5em, 1rem);
   }
 
 	:global(h1:first-child) {
